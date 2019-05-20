@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>SerachInstaService</title>
+</head>
+
+<body>
+  <div class=".SearchContainer container-fluid">
+    <div class="row">
+      <div class="col-xs-2">
+        <input type='text' id="searchVal"> </input>
+        <button id="search" title="Search" onClick="SearchInsta()"> Search!</button>
+		<a href="#" id="SerachResult"></a>
+	   		<ol id="list1"></ol>
+  </div>
+  </div>
+  
+   </div>
+</body>
+<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+
+<script type="text/javascript">
+
+var myobject =[];
+//const Url = 'http://127.0.0.1:5000/history';
+const Url = 'https://shaked-test-instagram.azurewebsites.net/history';
+$.ajax({
+    url: Url,
+    success: function(data) {
+		myobject = data;
+		for (obj in myobject) {
+			add_to_history_list(myobject[obj]);
+		}
+	}
+ });
+
+function add_to_history_list(val){
+	var ulist = document.getElementById("list1");
+	var newItem = document.createElement("li");
+	var a = document.createElement("a");
+	a.textContent = val;
+	a.setAttribute('href', val);
+	newItem.appendChild(a);
+	ulist.appendChild(newItem);
+}
+
+function SearchInsta(){
+	const val = document.getElementById("searchVal").value;
+	const Url = 'https://shaked-test-instagram.azurewebsites.net/search?value=' + val;
+	//const Url = 'http://127.0.0.1:5000/search?value=' + val;
+	$.ajax({
+    url: Url,
+    success: function(data) {
+      document.getElementById("SerachResult").href = data;
+	  document.getElementById("SerachResult").innerHTML = data;
+	  add_to_history_list(data);
+    }
+});
+}
+
+
+
+
+
+</script>
+
+</html>
+
